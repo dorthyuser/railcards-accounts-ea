@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="health-test-suite.xml" />
+	<munit:test name="health-test-suite-api-aliveTest" doc:id="25171e32-4977-4cb1-a0a3-8364fc9b04a4" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock API alive Listener" doc:id="e02cd17f-f259-431f-9400-ce22dd47b5e3" processor="http:listener">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="railcards-accounts-ea-httpsListenerConfig" attributeName="config-ref" />
+					<munit-tools:with-attribute whereValue="/alive" attributeName="path" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#["UP"]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to api-alive" doc:id="29148ade-8785-4ff1-89ad-c29b2cc1e26a" name="api-alive"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="1ce47c7f-c869-42e4-993d-bfba492e4340" expression="#[payload]" is='#[MunitTools::equalTo("UP")]'/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="health-test-suite-api-readyTest" doc:id="1269c0c2-d7f4-464f-a65e-7ff808116c05" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock API ready Listener" doc:id="5266a3e3-b6cf-40e0-a0c5-bed1f62b5b76" processor="http:listener">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="railcards-accounts-ea-httpsListenerConfig" attributeName="config-ref" />
+					<munit-tools:with-attribute whereValue="/ready" attributeName="path" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#["UP"]' />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to api-ready" doc:id="28fd0c18-4ed1-411e-a9a9-be4fd3672248" name="api-ready"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="b99c8797-a71b-479f-bde8-7df8041bfcff" expression="#[payload]" is='#[MunitTools::equalTo("UP")]'/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="health-test-suite-check-all-dependencies-are-aliveTest" doc:id="c4325ba5-ac84-4df1-ac6a-c7f1adba9fe1" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Flow-ref" doc:id="04d3ef63-46a7-426d-a7dd-098418be8a53" processor="sub-flow">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="check-all-dependencies-are-alive" attributeName="name" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to check-all-dependencies-are-alive" doc:id="e6b5c49f-7a04-449f-a58f-b0d83c2c8bc0" name="check-all-dependencies-are-alive"/>
+		</munit:execution>
+	</munit:test>
+
+
+</mule>

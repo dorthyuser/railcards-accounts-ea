@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>uk.co.nationalrail</groupId>
+		<artifactId>api-parent-pom</artifactId>
+		<version>1.1.14</version>
+	</parent>
+
+	<groupId>uk.co.nationalrail</groupId>
+	<artifactId>railcards-accounts-ea</artifactId>
+	<version>${revision}${changelist}</version>
+	<packaging>mule-application</packaging>
+	<name>railcards-accounts-ea</name>
+
+	<properties>
+		<revision>1.1.0</revision>
+		<changelist>-${buildNumber}-SNAPSHOT</changelist>
+		<buildNumber>0</buildNumber>
+		<api.layer>${api.layer.eapi}</api.layer>
+		<mule-salesforce-connector.version>10.21.0</mule-salesforce-connector.version>
+		<!-- <mule.maven.plugin.version>4.2.0</mule.maven.plugin.version> -->
+		<!--<maven-resources-plugin-version>3.3.1</maven-resources-plugin-version> -->
+	</properties>
+
+	<build>
+		<resources>
+			<!--<resource>
+				<directory>${basedir}/src/main/app</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>${basedir}/src/main/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+				   <exclude>certificate.der</exclude>
+				</excludes> 
+			</resource> -->
+		</resources> 
+		<plugins>
+		
+			<plugin>
+				<groupId>com.mulesoft.munit.tools</groupId>
+				<artifactId>munit-maven-plugin</artifactId>
+			</plugin>  
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+			</plugin>
+			<!-- plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.13.0</version>
+				<configuration>
+					<compilerArgs>
+						<args>-parameters</args>
+					</compilerArgs>
+					<target>1.8</target>
+				</configuration>
+			</plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<nonFilteredFileExtensions>
+						<nonFilteredFileExtension>jks</nonFilteredFileExtension>
+						<nonFilteredFileExtension>der</nonFilteredFileExtension>
+						
+					</nonFilteredFileExtensions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>com.mulesoft.connectors</groupId>
+			<artifactId>mule-salesforce-connector</artifactId>
+			<version>${mule-salesforce-connector.version}</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>1646e1ef-5dd6-4ed5-973a-0ca5ce210da2</groupId>
+			<artifactId>accounts-ea-api</artifactId>
+			<version>1.0.9</version>
+			<classifier>raml</classifier>
+			<type>zip</type>
+		</dependency>
+		<dependency>
+			<groupId>com.mule.modules</groupId>
+			<artifactId>mule-custom-metrics-extension</artifactId>
+			<version>2.3.1</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>com.mulesoft.connectors</groupId>
+			<artifactId>mule-amazon-s3-connector</artifactId>
+			<version>6.3.12</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>		
+	</dependencies>
+	<repositories>
+		<repository>
+			<id>rdg-nexus-repo</id>
+			<url>https://52.50.124.76:8443/repository/maven-public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>anypoint-exchange-v3</id>
+			<name>Anypoint Exchange V3</name>
+			<url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
+</project>

@@ -1,0 +1,48 @@
+api:
+  version: "v1"
+
+https:  
+  listener:
+    host: "0.0.0.0"
+    port: "8082"
+    path: "api/${api.version}/*"
+  requester:
+    sa:  
+      accounts:
+        host: "mule-worker-internal-rdg-railcards-accounts-sa-v1-uat.uk-e1.cloudhub.io"
+        port: "8092"
+        basepath: "/api/v1"
+        response:
+          timeout: "25000"
+        truststore:
+          insecure: "true"
+        client_id: "80c804bc5d854e4ba9cf50bd325d1f99"
+        client_secret: "![qMXXW32L3k/3UX2B7Aut+yiBDIGqtUThVxqAR1Txr/0ETdrKNBPbIHJvgMOrrF1P]"
+
+# Amazon s3 bucket # 
+amazon:
+  s3:
+    accessKey: "![/L5z49ZBWU4E3aCC6C2lroBdma8bTZ0q/CzBymRHJDk=]"
+    secretKey: "![8buRhRZvS9i1ptuG4xHdrqzhBgIOTn/82TQaa8ec0rRkzLNK/goJSisrd+Hp6KUx]"
+    region: "eu-west-1" 
+#   Europe (Ireland)  
+    bucket: "mulesoft-sf-error-landing" 
+              
+keystore:
+  file:
+    path: "config/keystore-nonproduction.jks"
+  cert:
+    alias: "mule"
+  keypassword: "![dek72A1Fr+LJJYQ37rFHhQ==]"
+  storepassword: "![CZ88nJP/qqjOLs++p2M4pg==]" 
+
+autodiscovery:
+  api: 
+    id: "15780230"
+  
+anypoint:
+  platform:
+    client_id: "a82b5287c958457bab782867ca92fbf2"
+    client_secret: "xxxxxxxxxxxxxxxxxxxx"
+    base_uri: "https://anypoint.mulesoft.com"
+    analytics_base_uri: "https://analytics-ingest.anypoint.mulesoft.com"

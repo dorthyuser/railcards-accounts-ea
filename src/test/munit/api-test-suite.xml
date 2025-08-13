@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="   http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd   http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd   http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<munit:config name="api-test-suite.xml">
+	</munit:config>
+	<munit:test description="APIkit BAD REQUEST" doc:id="8dfaf1b4-1270-4d47-962e-823ad31f1e0d" name="api-test-suite-400-bad-request-Test">
+		<munit:behavior>
+			<munit-tools:mock-when doc:id="f31be483-b57b-45d2-823c-5b401ba1297a" doc:name="Mock HTTPS Listener" processor="http:listener">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute attributeName="path" whereValue="${https.listener.path}"/>
+					<munit-tools:with-attribute attributeName="doc:name" whereValue="HTTPS Listener"/>
+					<munit-tools:with-attribute attributeName="config-ref" whereValue="railcards-accounts-ea-httpsListenerConfig"/>
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:attributes value="#[{statusCode : 400}]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:id="6b3b4d4c-e13b-4504-b7bf-830daf620d40" doc:name="Set Event">
+				<munit:payload value="#[MunitTools::getResourceAsString('request/post-account-request.json')]" />
+				<munit:attributes value='#[{"headers":{&#10;"client_id": "0aeda0574",&#10;"content-type": "application/json",&#10;"accept": "*/*",&#10;"authorization": "Bearer sometoken"},&#10;"method": "POST",&#10;"scheme": "http",&#10;"queryParams": {},&#10;"requestUri": "/api/v1/accounts",&#10;"queryString": "",&#10;"version": "HTTP/1.1",&#10;"listenerPath": "/api/v1/*",&#10;"relativePath": "/api/v1/accounts",&#10;"localAddress": "",&#10;"uriParams": {},&#10;"rawRequestUri": "/api/v1/accounts",&#10;"rawRequestPath": "/api/v1/accounts",&#10;"remoteAddress": "",&#10;"requestPath": "/api/v1/accounts"&#10;} as Object{class:"org.mule.extension.http.api.HttpRequestAttributes"&#10;}]' />
+			</munit:set-event>
+			<flow-ref doc:id="a5d80882-62a2-4113-acb6-a6ec6f3db569" doc:name="Flow-ref to railcards-accounts-ea-api" name="railcards-accounts-ea-api"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="34656723-999f-4334-936f-092698e799f7" expression="#[payload.error.errorCode]" is="#[MunitTools::equalTo(400)]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test description="APIkit NOT FOUND" doc:id="468abd07-e167-4ae8-a94b-fb215bcd5472" name="api-test-suite-404-not-found-Test">
+		<munit:behavior>
+			<munit-tools:mock-when doc:id="4e56ecbc-297e-45d7-89fa-9e80340ef167" doc:name="Mock HTTPS Listener" processor="http:listener">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute attributeName="path" whereValue="${https.listener.path}"/>
+					<munit-tools:with-attribute attributeName="doc:name" whereValue="HTTPS Listener"/>
+					<munit-tools:with-attribute attributeName="config-ref" whereValue="railcards-accounts-ea-httpsListenerConfig"/>
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:attributes value="#[{statusCode : 404}]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:id="bbabf17a-8cdc-41ef-86cd-c4a108bfd7d8" doc:name="Set Event">
+				<munit:payload value="#[MunitTools::getResourceAsString('request/post-account-request.json')]" />
+				<munit:attributes value='#[{"headers":{&#10;"client_id": "0aeda0574",&#10;"client_secret": "bae0fe4a49",&#10;"content-type": "application/json",&#10;"accept": "*/*",&#10;"authorization": "Bearer sometoken"},&#10;"method": "POST",&#10;"scheme": "http",&#10;"queryParams": {},&#10;"requestUri": "/api/v1/account",&#10;"queryString": "",&#10;"version": "HTTP/1.1",&#10;"listenerPath": "/api/v1/*",&#10;"relativePath": "/api/v1/account",&#10;"localAddress": "",&#10;"uriParams": {},&#10;"rawRequestUri": "/api/v1/account",&#10;"rawRequestPath": "/api/v1/account",&#10;"remoteAddress": "",&#10;"requestPath": "/api/v1/account"&#10;} as Object{class:"org.mule.extension.http.api.HttpRequestAttributes"&#10;}]' />
+			</munit:set-event>
+			<flow-ref doc:id="8c118e42-c3e6-470f-8cfd-3d939856db7b" doc:name="Flow-ref to railcards-accounts-ea-api" name="railcards-accounts-ea-api"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="c774e0c8-162a-44d6-aa6d-e20090757155" expression="#[payload.error.errorCode]" is="#[MunitTools::equalTo(404)]"/>
+		</munit:validation>
+	</munit:test>
+		<munit:test description="APIkit Method Not Allowed" doc:id="6bc48ac5-9dbc-4e1d-966e-7ebbe37b0055" name="api-test-suite-405-method-not-allowed-Test">
+		<munit:behavior>
+			<munit-tools:mock-when doc:id="fe7e4983-d16b-450b-8137-993ee73377d2" doc:name="Mock HTTPS Listener" processor="http:listener">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute attributeName="path" whereValue="${https.listener.path}"/>
+					<munit-tools:with-attribute attributeName="doc:name" whereValue="HTTPS Listener"/>
+					<munit-tools:with-attribute attributeName="config-ref" whereValue="railcards-accounts-ea-httpsListenerConfig"/>
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:attributes value="#[{statusCode : 405}]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:id="0cb5d3f9-c98d-4db1-9045-83be225a2539" doc:name="Set Event">
+				<munit:payload value="#[MunitTools::getResourceAsString('request/post-account-request.json')]" />
+				<munit:attributes value='#[{"headers":{&#10;"client_id": "0aeda0574",&#10;"client_secret": "bae0fe4a49",&#10;"content-type": "application/json",&#10;"accept": "*/*",&#10;"authorization": "Bearer sometoken"},&#10;"method": "PUT",&#10;"scheme": "http",&#10;"queryParams": {},&#10;"requestUri": "/api/v1/accounts",&#10;"queryString": "",&#10;"version": "HTTP/1.1",&#10;"listenerPath": "/api/v1/*",&#10;"relativePath": "/api/v1/accounts",&#10;"localAddress": "",&#10;"uriParams": {},&#10;"rawRequestUri": "/api/v1/accounts",&#10;"rawRequestPath": "/api/v1/accounts",&#10;"remoteAddress": "",&#10;"requestPath": "/api/v1/accounts"&#10;} as Object{class:"org.mule.extension.http.api.HttpRequestAttributes"&#10;}]' />
+			</munit:set-event>
+			<flow-ref doc:id="4efa8f99-aff9-4ca7-b6f1-ed75aa722700" doc:name="Flow-ref to railcards-accounts-ea-api" name="railcards-accounts-ea-api"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="5c13cd29-6d13-430f-891c-30d64558fb1c" expression="#[payload.error.errorCode]" is="#[MunitTools::equalTo(405)]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test description="APIkit Unsupported Media Type" doc:id="d22446c0-3030-465c-98e4-1364923a703e" name="api-test-suite-415-unsupported-media-type-Test">
+		<munit:behavior>
+			<munit-tools:mock-when doc:id="0feddf9f-7b82-4c22-9bf1-268ce3fba5d4" doc:name="Mock HTTPS Listener" processor="http:listener">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute attributeName="path" whereValue="${https.listener.path}"/>
+					<munit-tools:with-attribute attributeName="doc:name" whereValue="HTTPS Listener"/>
+					<munit-tools:with-attribute attributeName="config-ref" whereValue="railcards-accounts-ea-httpsListenerConfig"/>
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:attributes value="#[{statusCode : 415}]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:id="6e7b1062-a1ff-452c-9173-b07a3a35a7ec" doc:name="Set Event">
+				<munit:payload value="#[MunitTools::getResourceAsString('request/post-account-request.json')]" />
+				<munit:attributes value='#[{"headers":{&#10;"client_id": "0aeda0574",&#10;"client_secret": "bae0fe4a49",&#10;"content-type": "application/xml",&#10;"accept": "*/*",&#10;"authorization": "Bearer sometoken"},&#10;"method": "POST",&#10;"scheme": "http",&#10;"queryParams": {},&#10;"requestUri": "/api/v1/accounts",&#10;"queryString": "",&#10;"version": "HTTP/1.1",&#10;"listenerPath": "/api/v1/*",&#10;"relativePath": "/api/v1/accounts",&#10;"localAddress": "",&#10;"uriParams": {},&#10;"rawRequestUri": "/api/v1/accounts",&#10;"rawRequestPath": "/api/v1/accounts",&#10;"remoteAddress": "",&#10;"requestPath": "/api/v1/accounts"&#10;} as Object{class:"org.mule.extension.http.api.HttpRequestAttributes"&#10;}]' />
+			</munit:set-event>
+			<flow-ref doc:id="5eceefdb-70e3-4a68-835e-a7c4412d9658" doc:name="Flow-ref to railcards-accounts-ea-api" name="railcards-accounts-ea-api"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="add636e2-b8c8-40d1-850a-8670f5d72861" expression="#[payload.error.errorCode]" is="#[MunitTools::equalTo(415)]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test description="Create Account Success Test" doc:id="d6722854-8d31-45ab-a96f-da54f959a63f" name="api-test-suite-post:\accounts:application\json:railcards-accounts-ea-config-201-response-Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock APIKit Router" doc:id="41ee54fe-b1d3-4c5e-aa82-41ce4f29dca0" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="railcards-accounts-ea-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Create Account System API Call" doc:id="9ae78577-e757-4732-8aa5-fc25fe38d6a9" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="POST" attributeName="method" />
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-create-Accounts" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="55fc730a-e32c-43c3-b082-34447ade7d6f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('response/post-account-201-response.json')]" />
+					<munit-tools:attributes value="#[{StatusCode: 201}]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:id="229f866d-79d0-4bd9-8413-908640ab4793" doc:name="Set Event">
+				<munit:payload value="#[MunitTools::getResourceAsString('request/post-account-request.json')]" />
+				<munit:attributes value='#[{"headers":{&#10;"client_id": "0aeda0574",&#10;"client_secret": "bae0fe4a49",&#10;"content-type": "application/json",&#10;"accept": "*/*",&#10;"authorization": "Bearer sometoken"},&#10;"method": "POST",&#10;"scheme": "http",&#10;"queryParams": {},&#10;"requestUri": "/api/v1/accounts",&#10;"queryString": "",&#10;"version": "HTTP/1.1",&#10;"listenerPath": "/api/v1/*",&#10;"relativePath": "/api/v1/accounts",&#10;"localAddress": "",&#10;"uriParams": {},&#10;"rawRequestUri": "/api/v1/accounts",&#10;"rawRequestPath": "/api/v1/accounts",&#10;"remoteAddress": "",&#10;"requestPath": "/api/v1/accounts"&#10;} as Object{class:"org.mule.extension.http.api.HttpRequestAttributes"&#10;}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow Ref railcards-accounts-ea-api" doc:id="410beec3-e139-4e38-ab1d-949ba03c2bc8" name="railcards-accounts-ea-api"/>
+			<flow-ref doc:name="post:\accounts:application\json:railcards-accounts-ea-config" doc:id="d6d6c124-29d0-4421-a079-faf836b7fbc1" name="post:\accounts:application\json:railcards-accounts-ea-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="5da6dd2b-9b03-452d-8cfa-451ffc922c39" processor="http:request" atLeast="#[1]">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-create-Accounts" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="55fc730a-e32c-43c3-b082-34447ade7d6f" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-httpsRequestConfig" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="edfef0e3-5f8d-4838-adb1-979138caa532" expression="#[attributes.StatusCode]" is="#[MunitTools::equalTo(201)]"/>
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="4dd0f350-57eb-437f-a89b-297c3aec458c" actual="#[payload]" expected="#[MunitTools::getResourceAsString('response/post-account-201-response.json')]"/>		
+		</munit:validation>
+	</munit:test>
+	<munit:test description="Create Account Failure Test" doc:id="8d2ac181-0dc0-469d-a373-64bf2b4a02cf" name="api-test-suite-post:\accounts:application\json:railcards-accounts-ea-config-400-response-Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Create Account System API Call" doc:id="d1d6ccf1-3006-44dc-9854-d2c738e4e805" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="POST" attributeName="method" />
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-create-Accounts" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="55fc730a-e32c-43c3-b082-34447ade7d6f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:attributes value="#[{StatusCode: 400}]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:id="dab51af3-1498-4bbc-8c2e-0d79418a58d6" doc:name="Set Event">
+				<munit:payload value="#[MunitTools::getResourceAsString('request/post-account-request.json')]" />
+				<munit:attributes value='#[{"headers":{&#10;"client_id": "0aeda0574",&#10;"client_secret": "bae0fe4a49",&#10;"content-type": "application/json",&#10;"accept": "*/*",&#10;"authorization": "Bearer sometoken"},&#10;"method": "POST",&#10;"scheme": "http",&#10;"queryParams": {},&#10;"requestUri": "/api/v1/accounts",&#10;"queryString": "",&#10;"version": "HTTP/1.1",&#10;"listenerPath": "/api/v1/*",&#10;"relativePath": "/api/v1/accounts",&#10;"localAddress": "",&#10;"uriParams": {},&#10;"rawRequestUri": "/api/v1/accounts",&#10;"rawRequestPath": "/api/v1/accounts",&#10;"remoteAddress": "",&#10;"requestPath": "/api/v1/accounts"&#10;} as Object{class:"org.mule.extension.http.api.HttpRequestAttributes"&#10;}]' />
+			</munit:set-event>
+			<flow-ref doc:name="post:\accounts:application\json:railcards-accounts-ea-config" doc:id="0be11bc9-bfa3-4130-acbf-2958941874bd" name="post:\accounts:application\json:railcards-accounts-ea-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="d68e2b90-c8fa-412f-a604-ddc9dd31c6c3" processor="http:request" atLeast="#[1]">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-create-Accounts" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="55fc730a-e32c-43c3-b082-34447ade7d6f" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-httpsRequestConfig" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="bcd286cd-424d-4ae5-8a16-7a56f8d7dc29" expression="#[attributes.StatusCode]" is="#[MunitTools::equalTo(400)]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test description="Update Account Success Test" doc:id="793fb815-16f6-42a8-a0d7-f39edaf4c591" name="api-test-suite-put:\accounts\(id):application\json:railcards-accounts-ea-config-200-response-Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Update Account System API Call" doc:id="17de5d34-da1c-4e4b-a6c7-e4f71d3dc1bb" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="PUT" attributeName="method" />
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-update-account" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="87c9d777-089e-4b79-8dd9-c76a7224d7d1" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('response/put-account-200-response.json')]" />
+					<munit-tools:attributes value="#[{StatusCode: 200}]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:name="Set Event" doc:id="a9726ede-31c1-4f5c-88ce-bb0f5e2988d9" >
+				<munit:payload value="#[MunitTools::getResourceAsString('request/put-account-request.json')]" />
+				<munit:attributes value='#[{"headers":{&#10;"client_id": "0aeda0574",&#10;"client_secret": "bae0fe4a49",&#10;"content-type": "application/json",&#10;"accept": "*/*",&#10;"authorization": "Bearer sometoken"},&#10;"method": "PUT",&#10;"scheme": "http",&#10;"queryParams": {},&#10;"requestUri": "/api/v1/accounts/0017E00001UJScbQAH",&#10;"queryString": "",&#10;"version": "HTTP/1.1",&#10;"listenerPath": "/api/v1/*",&#10;"relativePath": "/api/v1/accounts/0017E00001UJScbQAH",&#10;"localAddress": "",&#10;"uriParams": {"id" : "0017E00001UJScbQAH"},&#10;"rawRequestUri": "/api/v1/accounts/0017E00001UJScbQAH",&#10;"rawRequestPath": "/api/v1/accounts/0017E00001UJScbQAH",&#10;"remoteAddress": "",&#10;"requestPath": "/api/v1/accounts/0017E00001UJScbQAH"&#10;} as Object{class:"org.mule.extension.http.api.HttpRequestAttributes"&#10;}]' />
+			</munit:set-event>
+			<flow-ref doc:id="02761528-1c63-4d33-9ff9-da20a1538521" doc:name="Flow-ref to put:\accounts\(id):application\json:railcards-accounts-ea-config" name="put:\accounts\(id):application\json:railcards-accounts-ea-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="41a1b6fd-5f12-4339-a3e6-1f0435598454" processor="http:request" atLeast="#[1]">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-update-account" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="87c9d777-089e-4b79-8dd9-c76a7224d7d1" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-httpsRequestConfig" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="fc25aab1-6a1e-49bb-b0ed-972e1541a2cd" expression="#[attributes.StatusCode]" is="#[MunitTools::equalTo(200)]"/>
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="0a94f479-5a30-4d40-9bd9-9985773f5ae2" actual="#[payload]" expected="#[MunitTools::getResourceAsString('response/put-account-200-response.json')]" />
+		</munit:validation>
+	</munit:test>
+		<munit:test description="Update Account Failure Test" doc:id="95bfb325-ee24-444d-8920-bf3955edc9b8" name="api-test-suite-put:\accounts\(id):application\json:railcards-accounts-ea-config-400-response-Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Update Account System API Call" doc:id="88c74ebf-09d0-4a61-b645-08c493ac79e6" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="PUT" attributeName="method" />
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-update-account" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="87c9d777-089e-4b79-8dd9-c76a7224d7d1" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:attributes value="#[{StatusCode: 400}]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:name="Set Event" doc:id="ba38bbd0-e426-4f2c-9f13-93c4e308109b" >
+				<munit:payload value="#[MunitTools::getResourceAsString('request/put-account-request.json')]" />
+				<munit:attributes value='#[{"headers":{&#10;"client_id": "0aeda0574",&#10;"client_secret": "bae0fe4a49",&#10;"content-type": "application/json",&#10;"accept": "*/*",&#10;"authorization": "Bearer sometoken"},&#10;"method": "PUT",&#10;"scheme": "http",&#10;"queryParams": {},&#10;"requestUri": "/api/v1/accounts/0017E00001UJScbQAH",&#10;"queryString": "",&#10;"version": "HTTP/1.1",&#10;"listenerPath": "/api/v1/*",&#10;"relativePath": "/api/v1/accounts/0017E00001UJScbQAH",&#10;"localAddress": "",&#10;"uriParams": {"id" : "0017E00001UJScbQAH"},&#10;"rawRequestUri": "/api/v1/accounts/0017E00001UJScbQAH",&#10;"rawRequestPath": "/api/v1/accounts/0017E00001UJScbQAH",&#10;"remoteAddress": "",&#10;"requestPath": "/api/v1/accounts/0017E00001UJScbQAH"&#10;} as Object{class:"org.mule.extension.http.api.HttpRequestAttributes"&#10;}]' />
+			</munit:set-event>
+			<flow-ref doc:id="5586dc28-0685-499b-9881-874f3e540df9" doc:name="Flow-ref to put:\accounts\(id):application\json:railcards-accounts-ea-config" name="put:\accounts\(id):application\json:railcards-accounts-ea-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="02d62a16-6e5b-4e28-8477-f97a13eee64f" processor="http:request" atLeast="#[1]">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-update-account" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="87c9d777-089e-4b79-8dd9-c76a7224d7d1" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-httpsRequestConfig" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="9e202b00-9a40-42a6-a1d4-275c5d73af81" expression="#[attributes.StatusCode]" is="#[MunitTools::equalTo(400)]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test description="Get Accounts By Email Success Test" doc:id="f5ba02d5-4ede-47a4-93c9-01230a5d9df5" name="api-test-suite-get:\accounts:railcards-accounts-ea-config-200-response-Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock GET Accounts By Email System API Call" doc:id="b5fee597-9078-4541-a658-05a41e270b9f" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-get-accounts" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="12a59c2b-b370-4465-b551-f03b7d84303a" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-httpsRequestConfig" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('response/get-accounts-by-email-200-response.json')]" />
+					<munit-tools:attributes value="#[{StatusCode: 200}]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:name="Set Event" doc:id="7025b878-836b-48e3-8f69-f729a535d3b8" >
+				<munit:attributes value='#[{"headers":{&#10;"client_id": "0aeda0574",&#10;"client_secret": "bae0fe4a49",&#10;"content-type": "application/json",&#10;"accept": "*/*",&#10;"authorization": "Bearer sometoken"},&#10;"method": "GET",&#10;"scheme": "http",&#10;"queryParams": {"email" : "rdg-accounts-ea-testing@gmail.com"},&#10;"requestUri": "/api/v1/accounts",&#10;"queryString": "",&#10;"version": "HTTP/1.1",&#10;"listenerPath": "/api/v1/*",&#10;"relativePath": "/api/v1/accounts",&#10;"localAddress": "",&#10;"uriParams": {},&#10;"rawRequestUri": "/api/v1/accounts",&#10;"rawRequestPath": "/api/v1/accounts",&#10;"remoteAddress": "",&#10;"requestPath": "/api/v1/accounts"&#10;} as Object{class:"org.mule.extension.http.api.HttpRequestAttributes"&#10;}]' />
+			</munit:set-event>
+			<flow-ref doc:id="7eacd891-6c5e-48cc-adf8-77d7454ef765" doc:name="Flow-ref to get:\accounts:railcards-accounts-ea-config" name="get:\accounts:railcards-accounts-ea-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="7f573b98-22d4-4396-b8a2-2e3982d2c91b" processor="http:request" atLeast="#[1]">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-get-accounts" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="12a59c2b-b370-4465-b551-f03b7d84303a" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-httpsRequestConfig" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="5a20f9b1-f960-4f84-b624-149416a8e3a4" is="#[MunitTools::equalTo(200)]" expression="#[attributes.StatusCode]"/>
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="e0dd4faf-7fe0-4e5b-b6b8-f795cc348d7f" actual="#[payload]" expected="#[MunitTools::getResourceAsString('response/get-accounts-by-email-200-response.json')]"/>
+		</munit:validation>
+	</munit:test>
+		<munit:test description="Get Accounts By Email Failure Test" doc:id="76e7269f-7b5d-4fe6-a6cc-be983a5d196a" name="api-test-suite-get:\accounts:railcards-accounts-ea-config-204-response-Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock GET Accounts By Email System API Call" doc:id="84e1574c-7d91-48af-bde1-2035aa136948" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-get-accounts" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="12a59c2b-b370-4465-b551-f03b7d84303a" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-httpsRequestConfig" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:attributes value="#[{StatusCode: 204}]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:name="Set Event" doc:id="e3c87e86-0c4b-4edf-8b33-9aceef5402b1" >
+				<munit:attributes value='#[{"headers":{&#10;"client_id": "0aeda0574",&#10;"client_secret": "bae0fe4a49",&#10;"content-type": "application/json",&#10;"accept": "*/*",&#10;"authorization": "Bearer sometoken"},&#10;"method": "GET",&#10;"scheme": "http",&#10;"queryParams": {"email" : "rdg-accounts-ea-testing@gmail.com"},&#10;"requestUri": "/api/v1/accounts",&#10;"queryString": "",&#10;"version": "HTTP/1.1",&#10;"listenerPath": "/api/v1/*",&#10;"relativePath": "/api/v1/accounts",&#10;"localAddress": "",&#10;"uriParams": {},&#10;"rawRequestUri": "/api/v1/accounts",&#10;"rawRequestPath": "/api/v1/accounts",&#10;"remoteAddress": "",&#10;"requestPath": "/api/v1/accounts"&#10;} as Object{class:"org.mule.extension.http.api.HttpRequestAttributes"&#10;}]' />
+			</munit:set-event>
+			<flow-ref doc:id="821998f4-c5b7-4770-ba17-85cbdb36f748" doc:name="Flow-ref to get:\accounts:railcards-accounts-ea-config" name="get:\accounts:railcards-accounts-ea-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="143ff010-232d-498a-bd00-d855ba09fdf3" processor="http:request" atLeast="#[1]">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-get-accounts" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="12a59c2b-b370-4465-b551-f03b7d84303a" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-httpsRequestConfig" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="a1628aab-23e1-4911-8fe1-f9b8d2863d05" is="#[MunitTools::equalTo(204)]" expression="#[attributes.StatusCode]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test description="Get Accounts By Id Success Test" doc:id="d1faa251-daca-46bd-8344-581c43481903" name="api-test-suite-get:\accounts\(id):railcards-accounts-ea-config-200-response-Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock GET Accounts By Id System API Call" doc:id="a531a4f8-f193-4a46-b635-e24cc165f3d7" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-get-account-details" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="1c6000bd-a641-492e-b919-6af9039e1981" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('response/get-account-by-Id-200-response.json')]" />
+					<munit-tools:attributes value="#[{StatusCode: 200}]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:name="Set Event" doc:id="c10c3306-6a43-479e-9a4d-546a3c0776dc" >
+				<munit:attributes value='#[{"headers":{&#10;"client_id": "0aeda0574",&#10;"client_secret": "bae0fe4a49",&#10;"content-type": "application/json",&#10;"accept": "*/*",&#10;"authorization": "Bearer sometoken"},&#10;"method": "GET",&#10;"scheme": "http",&#10;"queryParams": {},&#10;"requestUri": "/api/v1/accounts/0017E00001UJScbQAH",&#10;"queryString": "",&#10;"version": "HTTP/1.1",&#10;"listenerPath": "/api/v1/*",&#10;"relativePath": "/api/v1/accounts/0017E00001UJScbQAH",&#10;"localAddress": "",&#10;"uriParams": {"id" : "0017E00001UJScbQAH"},&#10;"rawRequestUri": "/api/v1/accounts/0017E00001UJScbQAH",&#10;"rawRequestPath": "/api/v1/accounts/0017E00001UJScbQAH",&#10;"remoteAddress": "",&#10;"requestPath": "/api/v1/accounts/0017E00001UJScbQAH"&#10;} as Object{class:"org.mule.extension.http.api.HttpRequestAttributes"&#10;}]' />
+			</munit:set-event>
+			<flow-ref doc:id="ec3c7667-372d-412b-ad3e-368bd1659e4a" doc:name="Flow-ref to get:\accounts\(id):railcards-accounts-ea-config" name="get:\accounts\(id):railcards-accounts-ea-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="ecd8119e-23f7-4298-a98e-097519aea0fe" processor="http:request" atLeast="#[1]">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-get-account-details" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="1c6000bd-a641-492e-b919-6af9039e1981" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-httpsRequestConfig" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="4925c320-1c1c-409a-9758-2f6b1b1f3765" is="#[MunitTools::equalTo(200)]" expression="#[attributes.StatusCode]"/>
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="9f3afa87-57b8-4e3d-b5b6-b7128c5bdffa" actual="#[payload]" expected="#[MunitTools::getResourceAsString('response/get-account-by-Id-200-response.json')]"/>
+		</munit:validation>
+	</munit:test>
+		<munit:test description="Get Account By Id Failure Test-No Record" doc:id="573c41d6-a388-4cbd-a853-3d9178683b27" name="api-test-suite-get:\accounts\(id):railcards-accounts-ea-config-204-response-Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock GET Accounts By Id System API Call" doc:id="06536d62-e7d9-40e3-93d7-b9106ca2b4de" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-get-account-details" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="1c6000bd-a641-492e-b919-6af9039e1981" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:attributes value="#[{StatusCode: 204}]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:name="Set Event" doc:id="5bd36982-d76b-4a3d-b7e1-0d3f09745e3b" >
+				<munit:attributes value='#[{"headers":{&#10;"client_id": "0aeda0574",&#10;"client_secret": "bae0fe4a49",&#10;"content-type": "application/json",&#10;"accept": "*/*",&#10;"authorization": "Bearer sometoken"},&#10;"method": "GET",&#10;"scheme": "http",&#10;"queryParams": {},&#10;"requestUri": "/api/v1/accounts/0017E00001UJScbQAH",&#10;"queryString": "",&#10;"version": "HTTP/1.1",&#10;"listenerPath": "/api/v1/*",&#10;"relativePath": "/api/v1/accounts/0017E00001UJScbQAH",&#10;"localAddress": "",&#10;"uriParams": {"id" : "0017E00001UJScbQAH"},&#10;"rawRequestUri": "/api/v1/accounts/0017E00001UJScbQAH",&#10;"rawRequestPath": "/api/v1/accounts/0017E00001UJScbQAH",&#10;"remoteAddress": "",&#10;"requestPath": "/api/v1/accounts/0017E00001UJScbQAH"&#10;} as Object{class:"org.mule.extension.http.api.HttpRequestAttributes"&#10;}]' />
+			</munit:set-event>
+			<flow-ref doc:name="railcards-accounts-ea-get-account-details-sub-flow" doc:id="a44ca50d-a43c-4dc9-ab76-3161443e0472" name="railcards-accounts-ea-get-account-details-sub-flow" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="55dcb98c-d89b-4448-bc2b-3bf94f19d5e9" processor="http:request" atLeast="#[1]">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-get-account-details" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="1c6000bd-a641-492e-b919-6af9039e1981" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-httpsRequestConfig" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="9de10001-781f-4da0-8b0a-54a3493553ac" is="#[MunitTools::equalTo(204)]" expression="#[attributes.StatusCode]"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test description="Get Account By Id Failure-Connectivity Test" doc:id="687bcc79-829e-4e43-ac18-08f4903aa224" name="api-test-suite-get:\accounts\(id):railcards-accounts-ea-config-500-connectivity-issue-Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock GET Accounts By Id System API Call" doc:id="dc6933ac-7183-41af-a364-a289262d5ef0" processor="http:listener">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="${https.listener.path}" attributeName="path" />
+					<munit-tools:with-attribute whereValue="HTTPS Listener" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="railcards-accounts-ea-httpsListenerConfig" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Custom Metrics" doc:id="b2a71ae9-a7f9-43d7-b2b0-2ca1f1d15e4b" processor="custom-metrics:send">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Send Custom Metric" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="0453143c-b01f-4104-8127-28080e9b6079" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		
+</munit:behavior>
+		<munit:execution>
+			<munit:set-event doc:name="Set Event" doc:id="8e5cdac7-7938-4570-bdb7-33f5cd257142" >
+				<munit:attributes value='#[{"headers":{&#10;"client_id": "0aeda0574",&#10;"client_secret": "bae0fe4a49",&#10;"content-type": "application/json",&#10;"accept": "*/*",&#10;"authorization": "Bearer sometoken"},&#10;"method": "GET",&#10;"scheme": "http",&#10;"queryParams": {},&#10;"requestUri": "/api/v1/accounts/0017E00001UJScbQAH",&#10;"queryString": "",&#10;"version": "HTTP/1.1",&#10;"listenerPath": "/api/v1/*",&#10;"relativePath": "/api/v1/accounts/0017E00001UJScbQAH",&#10;"localAddress": "",&#10;"uriParams": {"id" : "0017E00001UJScbQAH"},&#10;"rawRequestUri": "/api/v1/accounts/0017E00001UJScbQAH",&#10;"rawRequestPath": "/api/v1/accounts/0017E00001UJScbQAH",&#10;"remoteAddress": "",&#10;"requestPath": "/api/v1/accounts/0017E00001UJScbQAH"&#10;} as Object{class:"org.mule.extension.http.api.HttpRequestAttributes"&#10;}]' />
+			</munit:set-event>
+			<try doc:name="Try" doc:id="2d7e9196-09c6-48f6-b776-4d849511b957" >
+				<flow-ref doc:id="dc4b66f1-4508-4601-af14-0b793b9cb95f" doc:name="Flow-ref to get:\accounts\(id):railcards-accounts-ea-config" name="get:\accounts\(id):railcards-accounts-ea-config" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="c68ebafd-389c-4321-ae42-6a5ece7f86d3" type="HTTP:CONNECTIVITY"/>
+				</error-handler>
+			</try>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="27508a48-b7b3-4f61-832f-6b9a24b7ff95" processor="http:request" atLeast="#[1]">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-get-account-details" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="1c6000bd-a641-492e-b919-6af9039e1981" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="railcards-accounts-sa-httpsRequestConfig" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="c0a57510-f693-4128-9cbe-1ae9534c30f0" is="#[MunitTools::equalTo(500)]" expression="#[payload.error.errorCode]"/>
+		</munit:validation>
+	</munit:test>
+
+</mule>

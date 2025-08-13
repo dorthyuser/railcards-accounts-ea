@@ -1,0 +1,28 @@
+include:
+  - project: 'rail-delivery-group/rail-delivery-group-mulesoft/mule-project-templates/cicd-base'
+    ref: railcards-projects
+    file: '/travel-info-services/.gitlab-ci.yml'
+
+#Default Variables
+variables:
+  BUILD_NUMBER: 
+    value: "0"
+    description: "Enter build number."
+
+  DEPLOY_VERSION: 
+    value: "1.0.0-1-SNAPSHOT"
+    description: "Enter the SNAPSHOT you would like to deploy into ACC/UAT/SUPP environment."
+
+  RELEASE_VERSION: 
+    value: "1.0.0"
+    description: "Enter the version for the release."
+  
+  # For external facing applications, update this to ext-rdg so that the DLB mapping rules allow this connectivity. 
+  APP_NAME_PREFIX: "rdg"
+
+  # Default application verion. Update based on versioning strategy and changes that are considered breaking changes. 
+  APP_VERSION: "v1"
+
+  #These variables represent the default variables to be used as part of the CI/CD pipeline. In terms of environment specific values (e.g. UAT, PROD needing different numbers / types of workers, please update the Project CI/CD environment variables)
+  CH_WORKER_TYPE: "MICRO"
+  CH_WORKERS: "1"
