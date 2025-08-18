@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # rdg-railcards-accounts-ea
 
 
@@ -90,3 +91,24 @@ For open source projects, say how it is licensed.
 
 ## Project status
 If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+=======
+# railcards-accounts-ea Node.js migration
+
+This project is a migration of the MuleSoft "railcards-accounts-ea" application to a Node.js service.
+
+Key features included in this migration scaffold:
+- Express.js HTTP server
+- Salesforce integration via jsforce (salesforce service stub)
+- AWS S3 integration for storing payloads
+- Prometheus-compatible metrics endpoint via prom-client
+- Configuration via dotenv and environment variables
+
+How to run
+1. Copy .env.example to .env and fill values
+2. npm install
+3. npm start
+
+Notes
+- The original Mule connectors (Salesforce, S3, custom metrics) are represented by lightweight Node.js services.
+- Business logic should be ported into the services/routes provided under src/.
+>>>>>>> ec090ac (Automated commit on branch master-migrated from AI2DEV)

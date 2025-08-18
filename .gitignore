@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ------------------------------------------------------------------------------ #
 # Java defaults (https://github.com/github/gitignore/blob/master/Java.gitignore) #
 # ------------------------------------------------------------------------------ #
@@ -46,3 +47,10 @@ target/
 .mule/**/*
 .DS_Store
 velocity.log
+=======
+node_modules/
+.env
+.DS_Store
+npm-debug.log
+logs/
+>>>>>>> ec090ac (Automated commit on branch master-migrated from AI2DEV)
